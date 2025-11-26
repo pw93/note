@@ -1,6 +1,8 @@
+#mingw
+
 1. Install MSYS2
 
-2. Open MSYS2 UCRT64 shell (important, not plain MSYS shell).
+2. Open MSYS2 mingw64 shell (important, not plain MSYS shell).
 3.
 # Update package database and core packages
 pacman -Syu

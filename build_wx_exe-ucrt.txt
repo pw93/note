@@ -1,0 +1,56 @@
+#ucrt64
+1. Install MSYS2
+
+2. Open MSYS2 UCRT64 shell (important, not plain MSYS shell).
+3.
+# Update package database and core packages
+pacman -Syu
+pacman -S mingw-w64-ucrt-x86_64-toolchain
+
+4. Download and extract wxWidgets source
+
+#######################
+
+cd /d/data/code/others/wxWidgets-3.2.8
+mkdir build-static
+cd build-static
+
+../configure --disable-shared --enable-unicode --with-msw \
+    --disable-dependency-tracking \
+    --with-libjpeg=builtin \
+    --with-libpng=builtin \
+    --with-libtiff=builtin \
+    --with-zlib=builtin \
+    CXXFLAGS="-static-libgcc -static-libstdc++"
+
+make -j8
+make install
+
+###########################
+
+
+
+
+
+
+# 假設你 install 到 /ucrt64
+g++ main.cpp -o wx_image_example.exe \
+    -I/d/data/code/others/wxWidgets-3.2.8/include \
+    -I/d/data/code/others/wxWidgets-3.2.8/include/wx-3.2 \
+    -L/d/data/code/others/wxWidgets-3.2.8/lib \
+    -lwx_baseu-3.2 -lwx_mswu_core-3.2 \
+    -static -lz -lcomctl32 -lole32 -luuid -lversion -lshell32
+	
+	
+	
+#Windows 靜態鏈接 wxWidgets 時，需要加：
+#-static -static-libgcc -static-libstdc++
+#可能還要加 -mwindows 去掉 console 視窗（如果 GUI 程式）	
+	
+g++ main.cpp -o wx_image_example.exe \
+    -I/d/data/code/others/wxWidgets-3.2.8/include \
+    -I/d/data/code/others/wxWidgets-3.2.8/include/wx-3.2 \
+    -L/d/data/code/others/wxWidgets-3.2.8/lib \
+    -lwx_baseu-3.2 -lwx_mswu_core-3.2 \
+    -static -static-libgcc -static-libstdc++ -mwindows \
+    -lz -lcomctl32 -lole32 -luuid -lversion -lshell32
